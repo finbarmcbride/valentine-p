@@ -33,20 +33,19 @@
     .bg-gif {
       position: fixed;
       inset: 0;
-      background: url('GIF_BEFORE_YES.gif') center / contain no-repeat;
+      background: url('https://media1.tenor.com/m/7TKoQ-mTxJoAAAAd/shivering-dog.gif') center / contain no-repeat;
       background-color: var(--cream);
       z-index: -2;
       transition: opacity 0.4s ease, background-image 0.6s ease;
     }
 
-    /* SOFT OVERLAY */
-    .bg-overlay {
+    /*.bg-overlay {
       position: fixed;
       inset: 0;
       background: linear-gradient(135deg, var(--cream), var(--pink));
       opacity: 0.85;
       z-index: -1;
-    }
+    }*/
 
     .card {
       background: rgba(255,255,255,0.92);
@@ -132,29 +131,39 @@
     const page2 = document.getElementById('page2');
     const bgGif = document.getElementById('bgGif');
 
-    /* ===== CONFIG ===== */
-    const gifAfterYes = 'GIF_AFTER_YES.gif';
+    /* =========================
+       AUDIO (PRIMED CORRECTLY)
+    ========================= */
+    const tapSound = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c8a8a1f0a.mp3?filename=pop-94319.mp3');
+    const successSound = new Audio('https://cdn.pixabay.com/download/audio/2022/08/04/audio_8cfcf61a8b.mp3?filename=success-1-6297.mp3');
+    const ambientSound = new Audio('https://cdn.pixabay.com/download/audio/2022/02/23/audio_2c5c9b9f94.mp3?filename=heartbeat-ambient-110624.mp3');
 
-    const preload = new Image();
-    preload.src = gifAfterYes;
-
-    /* ===== AUDIO ===== */
-    const proximitySound = new Audio(
-      'https://cdn.pixabay.com/download/audio/2022/02/23/audio_2c5c9b9f94.mp3?filename=heartbeat-ambient-110624.mp3'
-    );
-    proximitySound.loop = true;
-    proximitySound.volume = 0;
+    tapSound.volume = 0.6;
+    successSound.volume = 0.7;
+    ambientSound.volume = 0;
+    ambientSound.loop = true;
 
     let audioReady = false;
+
+    // PRIME ALL SOUNDS ON FIRST USER INTERACTION
     document.addEventListener('click', () => {
-      if (!audioReady) {
-        proximitySound.play();
-        audioReady = true;
-      }
+      if (audioReady) return;
+
+      [tapSound, successSound, ambientSound].forEach(sound => {
+        sound.play().then(() => {
+          sound.pause();
+          sound.currentTime = 0;
+        }).catch(() => {});
+      });
+
+      ambientSound.play(); // start silently
+      audioReady = true;
     }, { once: true });
 
-    /* ===== SHAKE STATE ===== */
-    let targetShake = 0.6;   // subtle idle
+    /* =========================
+       SHAKE SYSTEM
+    ========================= */
+    let targetShake = 0.6;
     let currentShake = 0.6;
     let shakeX = 0;
     let shakeY = 0;
@@ -164,10 +173,8 @@
       if (!shakingEnabled) return;
 
       currentShake += (targetShake - currentShake) * 0.1;
-
       shakeX += (Math.random() - 0.5) * currentShake;
       shakeY += (Math.random() - 0.5) * currentShake;
-
       shakeX *= 0.85;
       shakeY *= 0.85;
 
@@ -176,7 +183,9 @@
     }
     shakeLoop();
 
-    /* ===== PROXIMITY HANDLER ===== */
+    /* =========================
+       PROXIMITY LOGIC
+    ========================= */
     function handleProximity(e) {
       if (
         !audioReady ||
@@ -199,45 +208,46 @@
       const maxDistance = 350;
       const proximity = Math.max(0, (maxDistance - distance) / maxDistance);
 
-      proximitySound.volume = proximity * 0.7;
-      targetShake = 1.2 + proximity * 26;
+      ambientSound.volume = proximity * 0.6;
+      targetShake = 0.8 + proximity * 14;
     }
 
     document.addEventListener('mousemove', handleProximity);
     document.addEventListener('touchmove', handleProximity, { passive: true });
 
-    /* ===== YES CALM ZONE ===== */
-    yesBtn.addEventListener('mouseenter', () => {
-      targetShake = 0;
-    });
+    /* =========================
+       YES CALM ZONE
+    ========================= */
+    yesBtn.addEventListener('mouseenter', () => targetShake = 0);
+    yesBtn.addEventListener('mouseleave', () => targetShake = 0.6);
+    yesBtn.addEventListener('touchstart', () => targetShake = 0);
+    yesBtn.addEventListener('touchend', () => targetShake = 0.6);
 
-    yesBtn.addEventListener('mouseleave', () => {
-      targetShake = 0.6;
-    });
-
-    yesBtn.addEventListener('touchstart', () => {
-      targetShake = 0;
-    });
-
-    yesBtn.addEventListener('touchend', () => {
-      targetShake = 0.6;
-    });
-
-    /* ===== PAGE TRANSITION ===== */
+    /* =========================
+       PAGE TRANSITION
+    ========================= */
     supBtn.addEventListener('click', () => {
+      tapSound.currentTime = 0;
+      tapSound.play();
+
       page1.classList.add('hidden');
       page2.classList.remove('hidden');
     });
 
-    /* ===== YES CLICK ===== */
+    /* =========================
+       YES CLICK
+    ========================= */
     yesBtn.addEventListener('click', () => {
+      successSound.currentTime = 0;
+      successSound.play();
+
       shakingEnabled = false;
-      proximitySound.pause();
+      ambientSound.pause();
       document.body.style.transform = 'translate(0,0)';
 
       bgGif.style.opacity = '0';
       setTimeout(() => {
-        bgGif.style.backgroundImage = `url('${gifAfterYes}')`;
+        bgGif.style.backgroundImage = `url('GIF_AFTER_YES.gif')`;
         bgGif.style.opacity = '1';
       }, 300);
 
