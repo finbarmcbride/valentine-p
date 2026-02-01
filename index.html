@@ -114,96 +114,96 @@
     <p id="text">I have something important to ask you…</p>
 
     <div class="buttons" id="buttons">
-      <button id="yesBtn">Yes 💖</button>
-      <button id="noBtn">No 🙃</button>
+      <button id="yesBtn">Yes </button>
+      <button id="noBtn">No </button>
     </div>
   </div>
 
-  <script>
-    const noBtn = document.getElementById('noBtn');
-    const yesBtn = document.getElementById('yesBtn');
-    const title = document.getElementById('title');
-    const text = document.getElementById('text');
-    const buttons = document.getElementById('buttons');
+<script>
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const title = document.getElementById('title');
+  const text = document.getElementById('text');
+  const buttons = document.getElementById('buttons');
 
-    /* ===============================
-       AUDIO (PROXIMITY-BASED)
-    =============================== */
-    const proximitySound = new Audio(
-      'https://cdn.pixabay.com/download/audio/2022/02/23/audio_2c5c9b9f94.mp3?filename=heartbeat-ambient-110624.mp3'
-    );
-    proximitySound.loop = true;
-    proximitySound.volume = 0;
+  /* =========================
+     AUDIO (SAFE PATTERN)
+  ========================= */
+  const proximitySound = new Audio(
+    'https://cdn.pixabay.com/download/audio/2022/02/23/audio_2c5c9b9f94.mp3?filename=heartbeat-ambient-110624.mp3'
+  );
+  proximitySound.loop = true;
+  proximitySound.volume = 0;
 
-    let audioUnlocked = false;
+  let audioReady = false;
 
-    document.addEventListener('click', () => {
-      if (!audioUnlocked) {
-        proximitySound.play().then(() => {
-          audioUnlocked = true;
-        }).catch(() => {});
-      }
-    }, { once: true });
-
-    /* ===============================
-       SCREEN SHAKE
-    =============================== */
-    function applyShake(intensity) {
-      const x = (Math.random() - 0.5) * intensity;
-      const y = (Math.random() - 0.5) * intensity;
-      document.body.style.transform = `translate(${x}px, ${y}px)`;
+  // REQUIRED: start audio on click
+  document.addEventListener('click', () => {
+    if (!audioReady) {
+      proximitySound.play();
+      audioReady = true;
     }
+  }, { once: true });
 
-    function resetShake() {
-      document.body.style.transform = 'translate(0, 0)';
+  /* =========================
+     SCREEN SHAKE
+  ========================= */
+  function shakeScreen(intensity) {
+    const x = (Math.random() - 0.5) * intensity;
+    const y = (Math.random() - 0.5) * intensity;
+    document.body.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  function stopShake() {
+    document.body.style.transform = 'translate(0, 0)';
+  }
+
+  /* =========================
+     PROXIMITY TRACKING
+  ========================= */
+  document.addEventListener('mousemove', (e) => {
+    if (!audioReady) return;
+
+    const rect = noBtn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    const maxDistance = 350;
+    const proximity = Math.max(0, (maxDistance - distance) / maxDistance);
+
+    // Smooth volume ramp
+    proximitySound.volume = proximity * 0.8;
+
+    // Shake intensity
+    const intensity = proximity * 20;
+
+    if (proximity > 0) {
+      shakeScreen(intensity);
+    } else {
+      stopShake();
     }
+  });
 
-    /* ===============================
-       PROXIMITY DETECTION
-    =============================== */
-    document.addEventListener('mousemove', (e) => {
-      if (!audioUnlocked) return;
+  /* =========================
+     YES BUTTON
+  ========================= */
+  yesBtn.addEventListener('click', () => {
+    proximitySound.pause();
+    stopShake();
 
-      const rect = noBtn.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+    title.textContent = 'Yay!!! 💘';
+    text.innerHTML = 'You just made me the happiest person ever.<br><br>Will you be my Valentine? 🌹';
+    buttons.classList.add('hidden');
 
-      const dx = e.clientX - centerX;
-      const dy = e.clientY - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      const maxDistance = 300;
-      const proximity = Math.max(0, (maxDistance - distance) / maxDistance);
-
-      // Volume increases with proximity
-      proximitySound.volume = Math.min(1, proximity);
-
-      // Shake increases with proximity
-      const shakeIntensity = proximity * 25;
-
-      if (proximity > 0) {
-        applyShake(shakeIntensity);
-      } else {
-        resetShake();
-      }
-    });
-
-    /* ===============================
-       YES BUTTON
-    =============================== */
-    yesBtn.addEventListener('click', () => {
-      proximitySound.pause();
-      resetShake();
-
-      title.textContent = 'Yay!!! 💘';
-      text.innerHTML = 'You just made me the happiest person ever.<br><br>Will you be my Valentine? 🌹';
-      buttons.classList.add('hidden');
-
-      const finalMessage = document.createElement('p');
-      finalMessage.className = 'final';
-      finalMessage.innerHTML = 'I can’t wait to spend Valentine’s Day with you 🤍';
-      document.querySelector('.card').appendChild(finalMessage);
-    });
-  </script>
+    const finalMessage = document.createElement('p');
+    finalMessage.className = 'final';
+    finalMessage.innerHTML = 'I can’t wait to spend Valentine’s Day with you 🤍';
+    document.querySelector('.card').appendChild(finalMessage);
+  });
+</script>
 </body>
 </html>
