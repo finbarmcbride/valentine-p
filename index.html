@@ -6,7 +6,7 @@
   <title>Valentine</title>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=League+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=League+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -28,15 +28,17 @@
       color: var(--text);
       overflow: hidden;
     }
-  
-    /* BACKGROUND GIF */
+
+    /* BACKGROUND GIF — single fade transition for all changes */
     .bg-gif {
       position: fixed;
       inset: 0;
-      background: url('https://media1.tenor.com/m/7TKoQ-mTxJoAAAAd/shivering-dog.gif') center / cover no-repeat;
       background-color: var(--cream);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       z-index: -2;
-      transition: opacity 0.4s ease, background-image 0.6s ease;
+      transition: opacity 0.4s ease;
     }
 
     .card {
@@ -50,13 +52,13 @@
       font-size: 5rem;
       margin-bottom: 1.6rem;
     }
-    
+
 
     p {
       margin-bottom: 2rem;
       line-height: 1.6;
     }
-    
+
     .subtitle {
      font-size: 1.3rem;
      opacity: 0.75;
@@ -66,11 +68,75 @@
      font-weight: 300;
      text-align: center;
     }
-    
+
     .buttons {
       display: flex;
-      gap: 1rem;
+      gap: 3.5rem;
       justify-content: center;
+    }
+
+    /* Page 2 only: contained width, heading centered, buttons separated */
+    #page2 {
+      max-width: 42rem;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    #page2 .buttons {
+      width: 100%;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      justify-content: space-between;
+      gap: 0;
+    }
+    #page2 .buttons.buttons--center {
+      justify-content: center;
+    }
+    #page2 .buttons button,
+    #page2 #noBtn {
+      transition: none;
+    }
+    #page2 h1 {
+      white-space: nowrap;
+      text-align: center;
+      width: 100%;
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      margin-bottom: 3.5rem;
+    }
+
+    #page1b {
+      max-width: 42rem;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .feb-text-box {
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2rem;
+    }
+    #page1b .feb-text-box .subtitle {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.15rem, 2.8vw, 1.6rem);
+      line-height: 1.4;
+      color: #ffffff;
+      margin: 0;
+    }
+    #page3 {
+      max-width: 42rem;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    #page3 .buttons {
+      justify-content: center;
+    }
+    #page3 .subtitle {
+      font-family: 'League Script', cursive;
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
     }
 
     button {
@@ -82,17 +148,17 @@
       font-size: 1rem;
       font-weight: 100;
       cursor: pointer;
-      
+
       background: transparent;
       position: relative;
       overflow: hidden;
-      
-      transition: 
+
+      transition:
         transform 0.30s ease,
         box-shadow 0.30s ease,
         background-color 0.25s ease;
     }
-    
+
     button:hover {
        transform: translateY(-2px) scale(1.03);
        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
@@ -106,7 +172,7 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.03); }
     }
-    
+
     .primary {
       animation: yesPulse 3s ease-in-out infinite;
       background: linear-gradient(135deg, #e88fa2, #f6c1cc);
@@ -134,6 +200,147 @@
         inset 0 1px 2px rgba(255, 255, 255, 0.4);
     }
 
+    /* Final invite page — fancy invite card */
+    #page4 {
+      max-width: 28rem;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .invite-card {
+      background: linear-gradient(145deg, rgba(255, 250, 252, 0.97), rgba(255, 242, 246, 0.95));
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid rgba(232, 143, 162, 0.5);
+      border-radius: 4px;
+      padding: 2.25rem 2rem;
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+        0 4px 0 rgba(232, 143, 162, 0.3);
+      font-family: 'Cormorant Garamond', serif;
+      color: #3d2a30;
+    }
+    .invite-card .invite-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 0.5rem;
+    }
+    .invite-card .invite-heading {
+      font-size: clamp(1.85rem, 4vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    .invite-card .invite-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+      margin: 1.25rem auto;
+      opacity: 0.8;
+    }
+    .invite-card .invite-body {
+      font-size: 1.2rem;
+      line-height: 2;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+    .invite-card .invite-body .line {
+      margin: 0.25rem 0;
+    }
+    .invite-card .invite-ps {
+      font-size: 1rem;
+      font-style: italic;
+      opacity: 0.9;
+      margin-top: 1.25rem;
+    }
+    #page4 .buttons {
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    /* Game achievement notifications — top right */
+    .achievement-toast-container {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      pointer-events: none;
+    }
+    .achievement-toast {
+      background: linear-gradient(135deg, rgba(30, 25, 35, 0.95), rgba(50, 35, 55, 0.95));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #fff;
+      padding: 0.9rem 1.25rem;
+      border-radius: 12px;
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      font-size: 0.95rem;
+      font-weight: 500;
+      max-width: 320px;
+      animation: achievementSlideIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      border-left: 4px solid var(--rose);
+    }
+    .achievement-toast .toast-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--pink);
+      margin-bottom: 0.25rem;
+    }
+    .achievement-toast .toast-text {
+      color: rgba(255, 255, 255, 0.95);
+    }
+    @keyframes achievementSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(120%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes achievementFadeOut {
+      to {
+        opacity: 0;
+        transform: translateX(120%);
+      }
+    }
+    .achievement-toast.hide {
+      animation: achievementFadeOut 0.35s ease forwards;
+    }
+
+    .confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      overflow: hidden;
+    }
+    .confetti-piece {
+      position: absolute;
+      font-size: 1.25rem;
+      line-height: 1;
+      user-select: none;
+      will-change: transform;
+    }
+    .confetti-piece.confetti-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      font-size: 0;
+    }
 
     .hidden { display: none; }
   </style>
@@ -141,167 +348,524 @@
 
 <body>
 
-  <div class="bg-gif" id="bgGif"></div>
+<div class="bg-gif" id="bgGif"></div>
 
-  <div class="card">
+<div class="card">
 
-    <!-- PAGE 1 -->
-    <div id="page1">
-      <h1>hi pwincess</h1>
-        <p class="subtitle">gotta ask u smth</p>
-      
-      <div class="buttons">
-        <button class="primary" id="supBtn">sup?</button>
-      </div>
+  <!-- PAGE 1 -->
+  <div id="page1">
+    <h1>hi pwincess</h1>
+    <p class="subtitle">can i ask u something</p>
+
+    <div class="buttons">
+      <button class="primary" id="supBtn">sup?</button>
     </div>
-
-    <!-- PAGE 2 -->
-    <div id="page2" class="hidden">
-      <h1>will you be my valentine plis</h1>
-      <div class="buttons">
-        <button class="primary" id="yesBtn">YASSSSS</button>
-        <button class="secondary" id="noBtn">no</button>
-      </div>
-    </div>
-
   </div>
 
-  <script>
-    const supBtn = document.getElementById('supBtn');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const page1 = document.getElementById('page1');
-    const page2 = document.getElementById('page2');
-    const bgGif = document.getElementById('bgGif');
+  <!-- PAGE 1b — after sup? -->
+  <div id="page1b" class="hidden">
+    <div class="feb-text-box">
+      <p class="subtitle">so... um... its february... its that time... umm... so... alright... umm... yk feb 14.... um...hahah... like... yeah.. so... i just wanted to ask you if... um yeahhh... lol</p>
+    </div>
+    <div class="buttons">
+      <button class="primary" id="toValentineBtn">why he is dying like that?</button>
+    </div>
+  </div>
 
-    /* =========================
-       AUDIO – unlock on first user click (capture runs before button handlers)
-    ========================= */
-    const tapSound = new Audio('valentine-p/Magic Wind Chimes Sound Effect (HD) (mp3cut.net).mp3');
-    const successSound = new Audio('https://cdn.pixabay.com/download/audio/2022/08/04/audio_8cfcf61a8b.mp3?filename=success-1-6297.mp3');
-    const ambientSound = new Audio('https://cdn.pixabay.com/download/audio/2022/02/23/audio_2c5c9b9f94.mp3?filename=heartbeat-ambient-110624.mp3');
+  <!-- PAGE 2 -->
+  <div id="page2" class="hidden">
+    <h1>will you be my valentine?</h1>
+    <div class="buttons">
+      <button class="primary" id="yesBtn">yasssss</button>
+      <button class="secondary" id="noBtn">no</button>
+    </div>
+  </div>
 
-    tapSound.volume = 0.6;
-    successSound.volume = 0.7;
-    ambientSound.volume = 0;
-    ambientSound.loop = true;
+  <!-- PAGE 3 (after No) -->
+  <div id="page3" class="hidden">
+    <h1>plis</h1>
+    <div class="buttons">
+      <button class="primary" id="plisBtn">let me ask you again</button>
+    </div>
+  </div>
 
-    let audioUnlocked = false;
+  <!-- PAGE 4 — Final invite (fancy card; fill in the placeholders below) -->
+  <div id="page4" class="hidden">
+    <div class="invite-card">
+      <p class="invite-title">You're invited</p>
+      <h2 class="invite-heading">Valentine's Day</h2>
+      <div class="invite-divider"></div>
+      <div class="invite-body">
+        <p class="line">Saturday, 14 February 2026</p>
+        <p class="line">7:00 PM</p>
+        <p class="line">Venue - Stay wherever you are ;)</p>
+        <p class="line">Just dress up and show up. Rest assured.</p>
+      </div>
+      <div class="invite-divider"></div>
+      <p class="invite-ps">Hope you have an amazing time. See you soon!</p>
+    </div>
+    <div class="buttons">
+      <button class="primary" id="acceptInviteBtn">Accept Invite</button>
+    </div>
+  </div>
 
-    function unlockAudio() {
-      if (audioUnlocked) return;
-      audioUnlocked = true;
+</div>
 
-      [tapSound, successSound, ambientSound].forEach((sound) => {
-        sound.play().then(() => {
-          sound.pause();
-          sound.currentTime = 0;
-        }).catch(() => {});
+<div class="achievement-toast-container" id="achievementContainer"></div>
+<div id="confettiContainer" class="confetti-container" aria-hidden="true"></div>
+
+<script>
+  const supBtn = document.getElementById('supBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+  const plisBtn = document.getElementById('plisBtn');
+  const page1 = document.getElementById('page1');
+  const page1b = document.getElementById('page1b');
+  const page2 = document.getElementById('page2');
+  const page3 = document.getElementById('page3');
+  const bgGif = document.getElementById('bgGif');
+
+  /* =========================
+     BACKGROUND GIF — centralized config and switch
+  ========================= */
+  const BG_GIFS = {
+    initial: 'https://media.tenor.com/hvFIBvUYL_4AAAAM/shy-xiaopang-xiaopang-dog.gif',
+    page1b: 'https://media.tenor.com/7k_fhbtM_AgAAAAM/staring-meme.gif',
+    afterSup: 'https://i.pinimg.com/originals/a3/10/29/a31029140fd97696b96f9f4e5cdfc681.gif',
+    afterYes: 'https://media.tenor.com/mtiOW6O-k8YAAAAM/shrek-shrek-rizz.gif',
+    afterNo: 'https://media0.giphy.com/media/iamIahPLWmo4tGiyDz/giphy.gif',
+    hoverYes: 'http://media1.tenor.com/m/uFkKfNv-8wsAAAAd/vince-carter-emotional-vince-carter.gif',
+    hoverNo: 'https://media1.tenor.com/m/T2g9DmDlZZEAAAAd/crying-lebron-james.gif'
+  };
+
+  const BG_HELL_YEAH_SEQUENCE = [
+    'https://media.tenor.com/mtiOW6O-k8YAAAAM/shrek-shrek-rizz.gif',
+    'https://64.media.tumblr.com/6f951737d824f9643b4f07381e319e99/tumblr_pgv0h713UC1u2klrwo1_400.gif',
+    'https://img.resized.co/balls_ie/eyJkYXRhIjoie1widXJsXCI6XCJodHRwczpcXFwvXFxcL21lZGlhLmJhbGxzLmllXFxcL3VwbG9hZHNcXFwvMjAxNFxcXC8wNlxcXC9IZXJyZXJhLTQuZ2lmXCIsXCJ3aWR0aFwiOlwiNjQwXCIsXCJoZWlnaHRcIjpcIjM2MFwiLFwiZGVmYXVsdFwiOlwiaHR0cHM6XFxcL1xcXC93d3cuYmFsbHMuaWVcXFwvaW1hZ2VzXFxcL2JyYW5kLWltYWdlLmpwZ1wiLFwib3B0aW9uc1wiOntcIm91dHB1dFwiOlwiYXZpZlwiLFwicXVhbGl0eVwiOjU1fX0iLCJoYXNoIjoiYTM4NThmYmE2YjQ5OWQ0YTcyOTQ0ZjIzNDQ2YjNjYTZjZmRlM2RiYSJ9/farewell-dear-friend-top-7-gifs-of-insane-mexico-manager-miguel-herrera.gif',
+    'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWE5djFmcWMwZDBlYmp5aGozMHp5N3VqenVhM2w0aWEzaHQ4aWk0dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8Z90kobwGL7CaCAAaB/giphy.gif'
+  ];
+
+  const BG_PLIS_SEQUENCE = [
+    'https://media1.tenor.com/m/8A2dktAA-XMAAAAd/interstellar-crying.gif',
+    'https://media1.tenor.com/m/T2g9DmDlZZEAAAAd/crying-lebron-james.gif',
+    'https://media.tenor.com/K_xU5ytFNoYAAAAM/crying-boy.gif',
+    'https://platform.vox.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/10223953/sadspongebob.gif?quality=90&strip=all&crop=0,11.200448765894,100,77.599102468212'
+  ];
+
+  const BG_FADE_MS = 300;
+  const BG_HELL_YEAH_INTERVAL_MS = 3000;
+  const BG_PLIS_INTERVAL_MS = 2000;
+  let hellYeahGifIntervalId = null;
+  let plisGifIntervalId = null;
+
+  function setBackgroundGif(state, skipTransition) {
+    const url = BG_GIFS[state];
+    if (!url) return;
+
+    if (skipTransition) {
+      bgGif.style.backgroundImage = `url('${url}')`;
+      bgGif.style.opacity = '1';
+      return;
+    }
+
+    bgGif.style.opacity = '0';
+    const afterFadeOut = () => {
+      bgGif.style.backgroundImage = `url('${url}')`;
+      bgGif.style.opacity = '1';
+    };
+    setTimeout(afterFadeOut, BG_FADE_MS);
+  }
+
+  function setBackgroundGifUrl(url, skipTransition) {
+    if (!url) return;
+    if (skipTransition) {
+      bgGif.style.backgroundImage = `url('${url}')`;
+      bgGif.style.opacity = '1';
+      return;
+    }
+    bgGif.style.opacity = '0';
+    const afterFadeOut = () => {
+      bgGif.style.backgroundImage = `url('${url}')`;
+      bgGif.style.opacity = '1';
+    };
+    setTimeout(afterFadeOut, BG_FADE_MS);
+  }
+
+  function startHellYeahGifSequence() {
+    stopHellYeahGifSequence();
+    if (!BG_HELL_YEAH_SEQUENCE.length) return;
+    setBackgroundGifUrl(BG_HELL_YEAH_SEQUENCE[0], true);
+    let index = 1;
+    hellYeahGifIntervalId = setInterval(() => {
+      const url = BG_HELL_YEAH_SEQUENCE[index % BG_HELL_YEAH_SEQUENCE.length];
+      setBackgroundGifUrl(url, false);
+      index++;
+    }, BG_HELL_YEAH_INTERVAL_MS);
+  }
+
+  function stopHellYeahGifSequence() {
+    if (hellYeahGifIntervalId !== null) {
+      clearInterval(hellYeahGifIntervalId);
+      hellYeahGifIntervalId = null;
+    }
+  }
+
+  function startPlisGifSequence() {
+    stopPlisGifSequence();
+    if (!BG_PLIS_SEQUENCE.length) return;
+    setBackgroundGifUrl(BG_PLIS_SEQUENCE[0], true);
+    let index = 1;
+    plisGifIntervalId = setInterval(() => {
+      const url = BG_PLIS_SEQUENCE[index % BG_PLIS_SEQUENCE.length];
+      setBackgroundGifUrl(url, false);
+      index++;
+    }, BG_PLIS_INTERVAL_MS);
+  }
+
+  function stopPlisGifSequence() {
+    if (plisGifIntervalId !== null) {
+      clearInterval(plisGifIntervalId);
+      plisGifIntervalId = null;
+    }
+  }
+
+  setBackgroundGif('initial', true);
+
+  /* =========================
+     SOUNDS — one per button (add your .mp3/.wav files in sounds/)
+  ========================= */
+  const SOUNDS = {
+    sup: 'sounds/sup.mp3',
+    next: 'sounds/next.mp3',
+    yes: 'sounds/yes.mp3',
+    no: 'sounds/no.mp3',
+    plis: 'sounds/plis.mp3',
+    sopar: 'sounds/sopar.mp3',
+    accept: 'sounds/accept.mp3'
+  };
+
+  function playSound(key) {
+    const src = SOUNDS[key];
+    if (!src) return;
+    const audio = new Audio(src);
+    audio.volume = 0.7;
+    audio.play().catch(() => {});
+  }
+
+  /* =========================
+     SHAKE SYSTEM
+  ========================= */
+  const SHAKE_IDLE = 0.1;        // visible but controlled at rest
+  const SHAKE_MAX = 10;          // extremely high when cursor nears No
+  const SHAKE_LERP = 0.05;       // smooth follow, no snapping
+  const SHAKE_DAMP = 0.8;        // shake lingers longer
+
+  let targetShake = SHAKE_IDLE;
+  let currentShake = SHAKE_IDLE;
+  let shakeX = 0;
+  let shakeY = 0;
+  let shakingEnabled = true;
+
+  function shakeLoop() {
+    if (!shakingEnabled) return;
+
+    currentShake += (targetShake - currentShake) * SHAKE_LERP;
+    shakeX += (Math.random() - 0.5) * currentShake;
+    shakeY += (Math.random() - 0.5) * currentShake;
+    shakeX *= SHAKE_DAMP;
+    shakeY *= SHAKE_DAMP;
+
+    document.body.style.transform = `translate(${shakeX}px, ${shakeY}px)`;
+    requestAnimationFrame(shakeLoop);
+  }
+  shakeLoop();
+
+  /* =========================
+     NO BUTTON — move when cursor gets close from any direction; catch radius for click
+  ========================= */
+  const NO_MOVE_THRESHOLD = 180;
+  const NO_MOVE_MAX_OFFSET = 280;
+  const CATCH_RADIUS = 85;
+  const NO_BTN_TEXTS = ['bwthb', 'noooo', 'pls', 'beda'];
+  let noBtnOffsetX = 0;
+  let noBtnOffsetY = 0;
+  let prevNoBtnDistance = Infinity;
+
+  function resetNoButtonPosition() {
+    noBtnOffsetX = 0;
+    noBtnOffsetY = 0;
+    prevNoBtnDistance = Infinity;
+    noBtn.style.transform = '';
+    noBtn.textContent = 'no';
+  }
+
+  function moveNoButton() {
+    noBtnOffsetX += (Math.random() - 0.5) * 260;
+    noBtnOffsetY += (Math.random() - 0.5) * 260;
+    noBtnOffsetX = Math.max(-NO_MOVE_MAX_OFFSET, Math.min(NO_MOVE_MAX_OFFSET, noBtnOffsetX));
+    noBtnOffsetY = Math.max(-NO_MOVE_MAX_OFFSET, Math.min(NO_MOVE_MAX_OFFSET, noBtnOffsetY));
+    noBtn.style.transform = `translate(${noBtnOffsetX}px, ${noBtnOffsetY}px)`;
+    noBtn.textContent = NO_BTN_TEXTS[Math.floor(Math.random() * NO_BTN_TEXTS.length)];
+  }
+
+  function isClickNearNoButton(clientX, clientY) {
+    const rect = noBtn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = clientX - cx;
+    const dy = clientY - cy;
+    return Math.sqrt(dx * dx + dy * dy) <= CATCH_RADIUS;
+  }
+
+  function goToPlisPage() {
+    setBackgroundGif('afterNo');
+    targetShake = 0;
+    currentShake = 0;
+    shakeX = 0;
+    shakeY = 0;
+    document.body.style.transform = 'translate(0,0)';
+    page2.classList.add('hidden');
+    page3.classList.remove('hidden');
+  }
+
+  /* =========================
+     PROXIMITY LOGIC (shake + no-button move when cursor enters zone)
+  ========================= */
+  function handleProximity(e) {
+    if (
+      !shakingEnabled ||
+      page2.classList.contains('hidden') ||
+      yesBtn.matches(':hover')
+    ) return;
+
+    const point = e.touches ? e.touches[0] : e;
+    if (!point) return;
+
+    const rect = noBtn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const dx = point.clientX - cx;
+    const dy = point.clientY - cy;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (prevNoBtnDistance > NO_MOVE_THRESHOLD && distance < NO_MOVE_THRESHOLD) {
+      moveNoButton();
+    }
+    prevNoBtnDistance = distance;
+
+    const maxDistance = 350;
+    const proximity = Math.max(0, (maxDistance - distance) / maxDistance);
+    const steep = proximity * proximity * proximity;
+    targetShake = SHAKE_IDLE + steep * (SHAKE_MAX - SHAKE_IDLE);
+  }
+
+  document.addEventListener('mousemove', handleProximity);
+  document.addEventListener('touchmove', handleProximity, { passive: true });
+
+  /* =========================
+     HOVER GIF — different bg when hovering YASSSSS vs No (page 2 only)
+  ========================= */
+  yesBtn.addEventListener('mouseenter', () => {
+    if (page2.classList.contains('hidden')) return;
+    setBackgroundGif('hoverYes');
+  });
+  yesBtn.addEventListener('mouseleave', () => {
+    if (page2.classList.contains('hidden')) return;
+    setBackgroundGif('afterSup');
+  });
+  noBtn.addEventListener('mouseenter', () => {
+    if (page2.classList.contains('hidden')) return;
+    setBackgroundGif('hoverNo');
+  });
+  noBtn.addEventListener('mouseleave', () => {
+    if (page2.classList.contains('hidden')) return;
+    setBackgroundGif('afterSup');
+  });
+
+  /* =========================
+     YES CALM ZONE — stop all shaking immediately
+  ========================= */
+  function stopShakeNow() {
+    targetShake = 0;
+    currentShake = 0;
+    shakeX = 0;
+    shakeY = 0;
+    document.body.style.transform = 'translate(0,0)';
+  }
+  function resumeIdleShake() {
+    targetShake = SHAKE_IDLE;
+  }
+
+  yesBtn.addEventListener('mouseenter', stopShakeNow);
+  yesBtn.addEventListener('mouseleave', resumeIdleShake);
+  yesBtn.addEventListener('touchstart', stopShakeNow);
+  yesBtn.addEventListener('touchend', resumeIdleShake);
+
+  /* =========================
+     PAGE TRANSITION
+  ========================= */
+  supBtn.addEventListener('click', () => {
+    playSound('sup');
+    setBackgroundGif('page1b');
+    page1.classList.add('hidden');
+    page1b.classList.remove('hidden');
+  });
+
+  document.getElementById('toValentineBtn').addEventListener('click', () => {
+    playSound('next');
+    setBackgroundGif('afterSup');
+    page1b.classList.add('hidden');
+    page2.classList.remove('hidden');
+    resetNoButtonPosition();
+  });
+
+  /* =========================
+     NO CLICK — transition to “plis” screen (no shake on page 3)
+  ========================= */
+  noBtn.addEventListener('click', () => {
+    playSound('no');
+    startPlisGifSequence();
+    targetShake = 0;
+    currentShake = 0;
+    shakeX = 0;
+    shakeY = 0;
+    document.body.style.transform = 'translate(0,0)';
+    page2.classList.add('hidden');
+    page3.classList.remove('hidden');
+  });
+
+  /* =========================
+     PLIS CLICK — go back to "will you be my valentine?" page
+  ========================= */
+  plisBtn.addEventListener('click', () => {
+    playSound('plis');
+    stopPlisGifSequence();
+    setBackgroundGif('afterSup');
+    page3.classList.add('hidden');
+    page2.classList.remove('hidden');
+    resetNoButtonPosition();
+  });
+
+  /* =========================
+     YES CLICK
+  ========================= */
+  yesBtn.addEventListener('click', () => {
+    playSound('yes');
+    shakingEnabled = false;
+    document.body.style.transform = 'translate(0,0)';
+
+    startHellYeahGifSequence();
+
+    page2.innerHTML = `
+      <h1>hell yeahhh babyyyy</h1>
+      <p>god is good! good is great!!</p>
+      <div class="buttons buttons--center">
+        <button class="primary" id="soparBtn">sopar</button>
+      </div>
+    `;
+    bindSoparBtn();
+  });
+
+  const page4 = document.getElementById('page4');
+  const acceptInviteBtn = document.getElementById('acceptInviteBtn');
+  const achievementContainer = document.getElementById('achievementContainer');
+
+  function bindSoparBtn() {
+    const soparBtn = document.getElementById('soparBtn');
+    if (soparBtn) {
+      soparBtn.addEventListener('click', () => {
+        stopHellYeahGifSequence();
+        playSound('sopar');
+        page2.classList.add('hidden');
+        page4.classList.remove('hidden');
       });
-      ambientSound.play().catch(() => {});
     }
+  }
 
-    // Unlock on first interaction; capture: true so this runs before any button handler
-    document.addEventListener('click', unlockAudio, { once: true, capture: true });
-    document.addEventListener('touchstart', unlockAudio, { once: true, capture: true });
+  function showAchievementToast(title, text) {
+    const el = document.createElement('div');
+    el.className = 'achievement-toast';
+    el.innerHTML = `
+      <div class="toast-title">${title}</div>
+      <div class="toast-text">${text}</div>
+    `;
+    achievementContainer.appendChild(el);
+    setTimeout(() => {
+      el.classList.add('hide');
+      setTimeout(() => el.remove(), 400);
+    }, 4500);
+  }
 
-    /* =========================
-       SHAKE SYSTEM
-    ========================= */
-    let targetShake = 0.6;
-    let currentShake = 0.6;
-    let shakeX = 0;
-    let shakeY = 0;
-    let shakingEnabled = true;
+  /* =========================
+     Love confetti on Accept Invite
+  ========================= */
+  const confettiContainer = document.getElementById('confettiContainer');
+  const CONFETTI_COLORS = ['#e88fa2', '#f6c1cc', '#fff6f8', '#d46a7f'];
+  const CONFETTI_HEARTS = ['♥', '❤', '💕', '💗'];
 
-    function shakeLoop() {
-      if (!shakingEnabled) return;
+  function runLoveConfetti() {
+    confettiContainer.innerHTML = '';
+    const count = 90;
+    const duration = 4000;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const speedMin = 180;
+    const speedMax = 320;
 
-      currentShake += (targetShake - currentShake) * 0.1;
-      shakeX += (Math.random() - 0.5) * currentShake;
-      shakeY += (Math.random() - 0.5) * currentShake;
-      shakeX *= 0.85;
-      shakeY *= 0.85;
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      const fromLeft = Math.random() > 0.5;
+      let x = fromLeft ? -30 - Math.random() * 40 : w + 30 + Math.random() * 40;
+      let y = Math.random() * (h + 80) - 20;
+      const isHeart = Math.random() > 0.35;
+      if (isHeart) {
+        el.className = 'confetti-piece';
+        el.textContent = CONFETTI_HEARTS[Math.floor(Math.random() * CONFETTI_HEARTS.length)];
+        el.style.color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        el.style.fontSize = (14 + Math.random() * 20) + 'px';
+      } else {
+        el.className = 'confetti-piece confetti-dot';
+        el.style.backgroundColor = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+      }
+      confettiContainer.appendChild(el);
 
-      document.body.style.transform = `translate(${shakeX}px, ${shakeY}px)`;
-      requestAnimationFrame(shakeLoop);
+      const speed = speedMin + Math.random() * (speedMax - speedMin);
+      const vx = fromLeft ? speed * (0.7 + Math.random() * 0.3) : -speed * (0.7 + Math.random() * 0.3);
+      const vy = (Math.random() - 0.5) * 80;
+      const start = performance.now();
+
+      function tick(now) {
+        const t = (now - start) / 1000;
+        if (t > duration / 1000) {
+          el.remove();
+          return;
+        }
+        x += vx * 0.016;
+        y += vy * 0.016;
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        el.style.transform = `rotate(${t * 500}deg)`;
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
     }
-    shakeLoop();
+  }
 
-    /* =========================
-       PROXIMITY LOGIC
-    ========================= */
-    function handleProximity(e) {
-      if (
-        !audioUnlocked ||
-        !shakingEnabled ||
-        page2.classList.contains('hidden') ||
-        yesBtn.matches(':hover')
-      ) return;
-
-      const point = e.touches ? e.touches[0] : e;
-      if (!point) return;
-
-      const rect = noBtn.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-
-      const dx = point.clientX - cx;
-      const dy = point.clientY - cy;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      const maxDistance = 350;
-      const proximity = Math.max(0, (maxDistance - distance) / maxDistance);
-
-      ambientSound.volume = proximity * 0.6;
-      targetShake = 0.4 + proximity * 8;
-    }
-
-    document.addEventListener('mousemove', handleProximity);
-    document.addEventListener('touchmove', handleProximity, { passive: true });
-
-    /* =========================
-       YES CALM ZONE
-    ========================= */
-    yesBtn.addEventListener('mouseenter', () => targetShake = 0);
-    yesBtn.addEventListener('mouseleave', () => targetShake = 0.6);
-    yesBtn.addEventListener('touchstart', () => targetShake = 0);
-    yesBtn.addEventListener('touchend', () => targetShake = 0.6);
-
-    /* =========================
-       PAGE TRANSITION
-    ========================= */
-    supBtn.addEventListener('click', () => {
-      tapSound.currentTime = 0;
-      tapSound.play().catch(() => {});
-
-      page1.classList.add('hidden');
-      page2.classList.remove('hidden');
-    });
-
-    /* =========================
-       YES CLICK
-    ========================= */
-    yesBtn.addEventListener('click', () => {
-      successSound.currentTime = 0;
-      successSound.play().catch(() => {});
-
-      shakingEnabled = false;
-      ambientSound.pause();
-      document.body.style.transform = 'translate(0,0)';
-
-      bgGif.style.opacity = '0';
-      setTimeout(() => {
-        bgGif.style.backgroundImage = `url('https://media.tenor.com/mtiOW6O-k8YAAAAM/shrek-shrek-rizz.gif')`;
-        bgGif.style.opacity = '1';
-      }, 300);
-
-      page2.innerHTML = `
-        <h1>sweet </h1>
-        <p>I can’t wait to be your Valentine 🤍</p>
-      `;
-    });
-  </script>
+  acceptInviteBtn.addEventListener('click', () => {
+    playSound('accept');
+    runLoveConfetti();
+    showAchievementToast('Unlocked new achievement', 'The Great Valentine');
+    setTimeout(() => {
+      showAchievementToast('Unlocked new territory', 'Chennai');
+    }, 600);
+  });
+</script>
 
 </body>
 </html>
+
