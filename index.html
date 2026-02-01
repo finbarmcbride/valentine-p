@@ -2,12 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Will You Be My Valentine?</title>
-
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --pink: #f6c1cc;
@@ -16,9 +13,7 @@
       --text: #5a2a33;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -26,10 +21,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, var(--cream), var(--pink));
       font-family: 'Montserrat', sans-serif;
       color: var(--text);
-      transition: transform 0.05s linear;
+      overflow: hidden;
+    }
+
+    /* Animated GIF background layer */
+    .bg-gif {
+      position: fixed;
+      inset: 0;
+      background: url('https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif') center / cover no-repeat;
+      opacity: 0.25;
+      z-index: -2;
+    }
+
+    /* Soft pink overlay */
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--cream), var(--pink));
+      opacity: 0.85;
+      z-index: -1;
     }
 
     .card {
@@ -41,17 +53,6 @@
       max-width: 420px;
       width: 90%;
       position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '❤';
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      font-size: 120px;
-      color: rgba(232,143,162,0.15);
-      transform: rotate(15deg);
     }
 
     h1 {
@@ -60,17 +61,12 @@
       margin-bottom: 0.5rem;
     }
 
-    p {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
+    p { margin-bottom: 2rem; }
 
     .buttons {
       display: flex;
       gap: 1rem;
       justify-content: center;
-      position: relative;
     }
 
     button {
@@ -81,63 +77,39 @@
       cursor: pointer;
     }
 
-    #yesBtn {
-      background: var(--rose);
-      color: white;
-      box-shadow: 0 8px 20px rgba(232,143,162,0.4);
-    }
+    #yesBtn { background: var(--rose); color: white; }
+    #noBtn { background: #f1f1f1; }
 
-    #noBtn {
-      background: #f1f1f1;
-      color: var(--text);
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .final {
-      animation: fadeIn 0.8s ease forwards;
-      margin-top: 2rem;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .hidden { display: none; }
   </style>
 </head>
-
 <body>
+  <div class="bg-gif"></div>
+  <div class="bg-overlay"></div>
+
   <div class="card">
     <h1 id="title">Hey my love 💕</h1>
     <p id="text">I have something important to ask you…</p>
 
     <div class="buttons" id="buttons">
-      <button id="yesBtn">Yes </button>
-      <button id="noBtn">No </button>
+      <button id="yesBtn">Yes 💖</button>
+      <button id="noBtn">No 🙃</button>
     </div>
   </div>
 
-<script>
+  <script>
   const noBtn = document.getElementById('noBtn');
   const yesBtn = document.getElementById('yesBtn');
   const title = document.getElementById('title');
   const text = document.getElementById('text');
   const buttons = document.getElementById('buttons');
 
-  /* =========================
-     AUDIO (SAFE PATTERN)
-  ========================= */
-  const proximitySound = new Audio(
-    'https://cdn.pixabay.com/download/audio/2022/02/23/audio_2c5c9b9f94.mp3?filename=heartbeat-ambient-110624.mp3'
-  );
+  /* ===== AUDIO ===== */
+  const proximitySound = new Audio('https://cdn.pixabay.com/download/audio/2022/02/23/audio_2c5c9b9f94.mp3?filename=heartbeat-ambient-110624.mp3');
   proximitySound.loop = true;
   proximitySound.volume = 0;
 
   let audioReady = false;
-
-  // REQUIRED: start audio on click
   document.addEventListener('click', () => {
     if (!audioReady) {
       proximitySound.play();
@@ -145,24 +117,33 @@
     }
   }, { once: true });
 
-  /* =========================
-     SCREEN SHAKE
-  ========================= */
-  function shakeScreen(intensity) {
-    const x = (Math.random() - 0.5) * intensity;
-    const y = (Math.random() - 0.5) * intensity;
-    document.body.style.transform = `translate(${x}px, ${y}px)`;
+  /* ===== SHAKE STATE ===== */
+  let targetShake = 2;   // subtle idle shake
+  let currentShake = 2;
+  let shakeX = 0;
+  let shakeY = 0;
+  let shakingEnabled = true;
+
+  function shakeLoop() {
+    if (!shakingEnabled) return;
+
+    currentShake += (targetShake - currentShake) * 0.1;
+
+    shakeX += (Math.random() - 0.5) * currentShake;
+    shakeY += (Math.random() - 0.5) * currentShake;
+
+    shakeX *= 0.85;
+    shakeY *= 0.85;
+
+    document.body.style.transform = `translate(${shakeX}px, ${shakeY}px)`;
+    requestAnimationFrame(shakeLoop);
   }
 
-  function stopShake() {
-    document.body.style.transform = 'translate(0, 0)';
-  }
+  shakeLoop();
 
-  /* =========================
-     PROXIMITY TRACKING
-  ========================= */
+  /* ===== PROXIMITY ===== */
   document.addEventListener('mousemove', (e) => {
-    if (!audioReady) return;
+    if (!audioReady || !shakingEnabled) return;
 
     const rect = noBtn.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
@@ -175,34 +156,26 @@
     const maxDistance = 350;
     const proximity = Math.max(0, (maxDistance - distance) / maxDistance);
 
-    // Smooth volume ramp
-    proximitySound.volume = proximity * 0.8;
+    // Audio ramps
+    proximitySound.volume = proximity * 0.9;
 
-    // Shake intensity
-    const intensity = proximity * 20;
-
-    if (proximity > 0) {
-      shakeScreen(intensity);
-    } else {
-      stopShake();
-    }
+    // Shake ramps
+    targetShake = 2 + proximity * 20;
   });
 
-  /* =========================
-     YES BUTTON
-  ========================= */
+  /* ===== YES BUTTON ===== */
+  yesBtn.addEventListener('mouseenter', () => {
+    targetShake = 0;
+  });
+
   yesBtn.addEventListener('click', () => {
+    shakingEnabled = false;
     proximitySound.pause();
-    stopShake();
+    document.body.style.transform = 'translate(0,0)';
 
     title.textContent = 'Yay!!! 💘';
     text.innerHTML = 'You just made me the happiest person ever.<br><br>Will you be my Valentine? 🌹';
     buttons.classList.add('hidden');
-
-    const finalMessage = document.createElement('p');
-    finalMessage.className = 'final';
-    finalMessage.innerHTML = 'I can’t wait to spend Valentine’s Day with you 🤍';
-    document.querySelector('.card').appendChild(finalMessage);
   });
 </script>
 </body>
