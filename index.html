@@ -127,7 +127,24 @@
     const text = document.getElementById('text');
     const buttons = document.getElementById('buttons');
 
-    noBtn.addEventListener('mouseover', () => {
+    const noTexts = [
+      "nah thats wild",
+      "nuh uh wrong option",
+      "BWTHB",
+      "sopar alla",
+      "beku pls",
+      "nah nivu baruthiddhini",
+      "helllll nah"
+    ];
+
+    let noIndex = 0;
+
+    noBtn.addEventListener('mouseenter', () => {
+      // change text
+      noBtn.textContent = noTexts[noIndex % noTexts.length];
+      noIndex++;
+
+      // move button
       const x = Math.random() * 200 - 100;
       const y = Math.random() * 200 - 100;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
@@ -147,4 +164,5 @@
   </script>
 </body>
 </html>
+
 
