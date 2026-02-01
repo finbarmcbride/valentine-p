@@ -39,19 +39,11 @@
       transition: opacity 0.4s ease, background-image 0.6s ease;
     }
 
-    /*.bg-overlay {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, var(--cream), var(--pink));
-      opacity: 0.85;
-      z-index: -1;
-    }*/
-
-.card {
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
-}
+    .card {
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
 
     h1 {
       font-family: 'League Script', cursive;
@@ -121,38 +113,26 @@
       color: white;
       font-weight: 600;
       box-shadow:
-      0 8px 20px rgba(232, 143, 162, 0.45),
-      inset 0 -2px 6px rgba(255,255,255,0.3);
-    }
+        0 8px 20px rgba(232, 143, 162, 0.45),
+        inset 0 -2px 6px rgba(255, 255, 255, 0.3);
     }
 
-.secondary {
-  background: rgba(255, 255, 255, 0.55);
-  color: #ffffff;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow:
-    0 6px 14px rgba(0,0,0,0.12),
-    inset 0 1px 2px rgba(255,255,255,0.4);
-}
-    
     .primary:hover {
-       box-shadow: 0 12px 30px rgba(232, 143, 162, 0.45);
-       color: #5a2a33;
-       box-shadow:
-       0 6px 14px rgba(0,0,0,0.12),
-       inset 0 -2px 6px rgba(0,0,0,0.05);
+      color: #5a2a33;
+      box-shadow:
+        0 12px 30px rgba(232, 143, 162, 0.5),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.05);
     }
-    
-.secondary {
-  background: rgba(255, 255, 255, 0.55);
-  color: #ffffff;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow:
-    0 6px 14px rgba(0,0,0,0.12),
-    inset 0 1px 2px rgba(255,255,255,0.4);
-}
+
+    .secondary {
+      background: rgba(255, 255, 255, 0.55);
+      color: #ffffff;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.12),
+        inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    }
 
 
     .hidden { display: none; }
@@ -162,7 +142,6 @@
 <body>
 
   <div class="bg-gif" id="bgGif"></div>
-  <div class="bg-overlay"></div>
 
   <div class="card">
 
@@ -196,7 +175,7 @@
     const bgGif = document.getElementById('bgGif');
 
     /* =========================
-       AUDIO (PRIMED CORRECTLY)
+       AUDIO – unlock on first user click (capture runs before button handlers)
     ========================= */
     const tapSound = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c8a8a1f0a.mp3?filename=pop-94319.mp3');
     const successSound = new Audio('https://cdn.pixabay.com/download/audio/2022/08/04/audio_8cfcf61a8b.mp3?filename=success-1-6297.mp3');
@@ -207,22 +186,24 @@
     ambientSound.volume = 0;
     ambientSound.loop = true;
 
-    let audioReady = false;
+    let audioUnlocked = false;
 
-    // PRIME ALL SOUNDS ON FIRST USER INTERACTION
-    document.addEventListener('click', () => {
-      if (audioReady) return;
+    function unlockAudio() {
+      if (audioUnlocked) return;
+      audioUnlocked = true;
 
-      [tapSound, successSound, ambientSound].forEach(sound => {
+      [tapSound, successSound, ambientSound].forEach((sound) => {
         sound.play().then(() => {
           sound.pause();
           sound.currentTime = 0;
         }).catch(() => {});
       });
+      ambientSound.play().catch(() => {});
+    }
 
-      ambientSound.play(); // start silently
-      audioReady = true;
-    }, { once: true });
+    // Unlock on first interaction; capture: true so this runs before any button handler
+    document.addEventListener('click', unlockAudio, { once: true, capture: true });
+    document.addEventListener('touchstart', unlockAudio, { once: true, capture: true });
 
     /* =========================
        SHAKE SYSTEM
@@ -252,7 +233,7 @@
     ========================= */
     function handleProximity(e) {
       if (
-        !audioReady ||
+        !audioUnlocked ||
         !shakingEnabled ||
         page2.classList.contains('hidden') ||
         yesBtn.matches(':hover')
@@ -292,7 +273,7 @@
     ========================= */
     supBtn.addEventListener('click', () => {
       tapSound.currentTime = 0;
-      tapSound.play();
+      tapSound.play().catch(() => {});
 
       page1.classList.add('hidden');
       page2.classList.remove('hidden');
@@ -303,7 +284,7 @@
     ========================= */
     yesBtn.addEventListener('click', () => {
       successSound.currentTime = 0;
-      successSound.play();
+      successSound.play().catch(() => {});
 
       shakingEnabled = false;
       ambientSound.pause();
