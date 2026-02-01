@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Will You Be My Valentine?</title>
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --pink: #f6c1cc;
@@ -101,6 +104,7 @@
 
     .final {
       animation: fadeIn 0.8s ease forwards;
+      margin-top: 2rem;
     }
 
     @keyframes fadeIn {
@@ -109,6 +113,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="card">
     <h1 id="title">Hey my love 💕</h1>
@@ -127,19 +132,30 @@
     const text = document.getElementById('text');
     const buttons = document.getElementById('buttons');
 
+    // Sound effect
+    const hoverSound = new Audio(
+      'https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c8a8a1f0a.mp3?filename=pop-94319.mp3'
+    );
+    hoverSound.volume = 0.5;
+
     const noTexts = [
-      "nah thats wild",
-      "nuh uh wrong option",
-      "BWTHB",
-      "sopar alla",
-      "beku pls",
-      "nah nivu baruthiddhini",
-      "helllll nah"
+      "Are you sure? 🥺",
+      "Think again 😳",
+      "Wait wait 😭",
+      "Don’t break my heart 💔",
+      "Pleaseeee 🥹",
+      "That’s illegal 😤",
+      "Nice try 😏",
+      "You’re clicking the wrong one 🙃"
     ];
 
     let noIndex = 0;
 
     noBtn.addEventListener('mouseenter', () => {
+      // play sound
+      hoverSound.currentTime = 0;
+      hoverSound.play();
+
       // change text
       noBtn.textContent = noTexts[noIndex % noTexts.length];
       noIndex++;
@@ -157,12 +173,9 @@
 
       const finalMessage = document.createElement('p');
       finalMessage.className = 'final';
-      finalMessage.style.marginTop = '2rem';
       finalMessage.innerHTML = 'I can’t wait to spend Valentine’s Day with you 🤍';
       document.querySelector('.card').appendChild(finalMessage);
     });
   </script>
 </body>
 </html>
-
-
