@@ -419,6 +419,7 @@
   const yesBtn = document.getElementById('yesBtn');
   const noBtn = document.getElementById('noBtn');
   const plisBtn = document.getElementById('plisBtn');
+  const toValentineBtn = document.getElementById('toValentineBtn');
   const page1 = document.getElementById('page1');
   const page1b = document.getElementById('page1b');
   const page2 = document.getElementById('page2');
@@ -544,12 +545,74 @@
     accept: 'sounds/accept.mp3'
   };
 
-  function playSound(key) {
+  const soundState = {};
+
+  function getSoundState(key) {
     const src = SOUNDS[key];
-    if (!src) return;
-    const audio = new Audio(src);
+    if (!src) return null;
+    if (!soundState[key]) {
+      const audio = new Audio(src);
+      audio.preload = 'auto';
+      soundState[key] = {
+        audio,
+        isClickPlaying: false
+      };
+      audio.addEventListener('ended', () => {
+        const state = soundState[key];
+        if (state && state.isClickPlaying) {
+          state.isClickPlaying = false;
+          audio.currentTime = 0;
+        }
+      });
+    }
+    return soundState[key];
+  }
+
+  function playHoverSound(key) {
+    const state = getSoundState(key);
+    if (!state) return;
+    if (state.isClickPlaying) return;
+    const audio = state.audio;
+    audio.loop = true;
     audio.volume = 0.7;
-    audio.play().catch(() => {});
+    try {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    } catch (_) {}
+  }
+
+  function stopHoverSound(key) {
+    const state = getSoundState(key);
+    if (!state) return;
+    if (state.isClickPlaying) return;
+    const audio = state.audio;
+    audio.pause();
+    audio.currentTime = 0;
+    audio.loop = false;
+  }
+
+  function playClickSound(key) {
+    const state = getSoundState(key);
+    if (!state) return;
+    const audio = state.audio;
+    state.isClickPlaying = true;
+    audio.pause();
+    audio.currentTime = 0;
+    audio.loop = false;
+    audio.volume = 0.9;
+    audio.play().catch(() => {
+      state.isClickPlaying = false;
+    });
+  }
+
+  function stopClickSound(key) {
+    const state = getSoundState(key);
+    if (!state) return;
+    const audio = state.audio;
+    state.isClickPlaying = false;
+    audio.pause();
+    audio.currentTime = 0;
+    audio.loop = false;
   }
 
   /* =========================
@@ -684,6 +747,24 @@
   });
 
   /* =========================
+     BUTTON HOVER SOUNDS
+  ========================= */
+  supBtn.addEventListener('mouseenter', () => playHoverSound('sup'));
+  supBtn.addEventListener('mouseleave', () => stopHoverSound('sup'));
+
+  toValentineBtn.addEventListener('mouseenter', () => playHoverSound('next'));
+  toValentineBtn.addEventListener('mouseleave', () => stopHoverSound('next'));
+
+  yesBtn.addEventListener('mouseenter', () => playHoverSound('yes'));
+  yesBtn.addEventListener('mouseleave', () => stopHoverSound('yes'));
+
+  noBtn.addEventListener('mouseenter', () => playHoverSound('no'));
+  noBtn.addEventListener('mouseleave', () => stopHoverSound('no'));
+
+  plisBtn.addEventListener('mouseenter', () => playHoverSound('plis'));
+  plisBtn.addEventListener('mouseleave', () => stopHoverSound('plis'));
+
+  /* =========================
      YES CALM ZONE — stop all shaking immediately
   ========================= */
   function stopShakeNow() {
@@ -706,14 +787,14 @@
      PAGE TRANSITION
   ========================= */
   supBtn.addEventListener('click', () => {
-    playSound('sup');
+    playClickSound('sup');
     setBackgroundGif('page1b');
     page1.classList.add('hidden');
     page1b.classList.remove('hidden');
   });
 
-  document.getElementById('toValentineBtn').addEventListener('click', () => {
-    playSound('next');
+  toValentineBtn.addEventListener('click', () => {
+    playClickSound('next');
     setBackgroundGif('afterSup');
     page1b.classList.add('hidden');
     page2.classList.remove('hidden');
@@ -724,7 +805,7 @@
      NO CLICK — transition to “plis” screen (no shake on page 3)
   ========================= */
   noBtn.addEventListener('click', () => {
-    playSound('no');
+    playClickSound('no');
     startPlisGifSequence();
     targetShake = 0;
     currentShake = 0;
@@ -739,7 +820,8 @@
      PLIS CLICK — go back to "will you be my valentine?" page
   ========================= */
   plisBtn.addEventListener('click', () => {
-    playSound('plis');
+    playClickSound('plis');
+    stopClickSound('no');
     stopPlisGifSequence();
     setBackgroundGif('afterSup');
     page3.classList.add('hidden');
@@ -751,7 +833,7 @@
      YES CLICK
   ========================= */
   yesBtn.addEventListener('click', () => {
-    playSound('yes');
+    playClickSound('yes');
     shakingEnabled = false;
     document.body.style.transform = 'translate(0,0)';
 
@@ -774,9 +856,11 @@
   function bindSoparBtn() {
     const soparBtn = document.getElementById('soparBtn');
     if (soparBtn) {
+      soparBtn.addEventListener('mouseenter', () => playHoverSound('sopar'));
+      soparBtn.addEventListener('mouseleave', () => stopHoverSound('sopar'));
       soparBtn.addEventListener('click', () => {
         stopHellYeahGifSequence();
-        playSound('sopar');
+        playClickSound('sopar');
         page2.classList.add('hidden');
         page4.classList.remove('hidden');
       });
@@ -857,7 +941,7 @@
   }
 
   acceptInviteBtn.addEventListener('click', () => {
-    playSound('accept');
+    playClickSound('accept');
     runLoveConfetti();
     showAchievementToast('Unlocked new achievement', 'The Great Valentine');
     setTimeout(() => {
